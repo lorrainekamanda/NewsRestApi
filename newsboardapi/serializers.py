@@ -1,4 +1,4 @@
-from .models import User
+from .models import User,Post,Comment
 from rest_framework import serializers
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -17,3 +17,16 @@ class RegisterSerializer(serializers.ModelSerializer):
 
         instance.save()
         return instance
+
+class PostSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Post
+        fields = ['id','title','author','link', 'creation_date','count_upvotes','name_of_author']
+
+
+class CommentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Comment
+        fields = ['id', 'post', 'author', 'creation_date','content','name_of_author'']
