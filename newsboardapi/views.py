@@ -1,12 +1,14 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from .models import User
+from .models import User,Post,Comment
 from .serializers import RegisterSerializer
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.exceptions import AuthenticationFailed,PermissionDenied
 import jwt
 import datetime
+from .serializers import PostSerializer, CommentSerializer
+from rest_framework import generics, mixins
 
 # Create your views here.
 class RegisterView(APIView):
@@ -48,3 +50,36 @@ class LoginView(APIView):
 
         return response
 
+def is_authenticated(request, *args, **kwargs):
+    token = request.COOKIES.get('jwt')
+    if not token:
+        return False
+    try:
+        payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+        user = User.objects.filter(id=payload.get('id')).first()
+        request.user = user
+
+    except jwt.ExpiredSignatureError:
+        return False
+
+    return True
+
+
+def is_permission_allowed(request, obj, *args, **kwargs):
+    return obj.author == request.user
+
+class PostApiView(mixins.ListModelMixin, mixins.CreateModelMixin,generics.GenericAPIView):
+
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+    def get(self, request, *args, **kwargs):
+       
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        if not is_authenticated(request):
+            raise AuthenticationFailed('Unauthenticated')
+
+        request.data['author'] = request.user.id
+        return self.create(request, *args, **kwargs)

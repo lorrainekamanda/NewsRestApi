@@ -6,10 +6,13 @@ class User(AbstractUser):
     email = models.CharField(max_length=200, unique=True)
     password = models.CharField(max_length=100)
 
-    username = None
+    username = 'username'
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
+
+
+
 
 class Post(models.Model):
     title = models.CharField(max_length=50)
