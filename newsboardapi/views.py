@@ -119,3 +119,20 @@ class PostDetailView(mixins.RetrieveModelMixin,mixins.UpdateModelMixin,
             raise PermissionDenied()
 
         return self.destroy(request, *args, **kwargs)
+
+class CommentListsView(mixins.ListModelMixin, mixins.CreateModelMixin,
+                   generics.GenericAPIView):
+
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+
+    def get(self, request, *args, **kwargs):
+        
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        if not is_authenticated(request):
+            raise AuthenticationFailed('Unauthenticated')
+
+        request.data['author'] = request.user.id
+        return self.create(request, *args, **kwargs)
