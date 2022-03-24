@@ -161,3 +161,18 @@ class CommentDetailView(mixins.RetrieveModelMixin,mixins.UpdateModelMixin,mixins
         if not is_authenticated(request):
             raise AuthenticationFailed('Unauthenticated')
         return self.retrieve(request, *args, **kwargs)
+
+    
+    def put(self, request, *args, **kwargs):
+        if not is_authenticated(request):
+            raise AuthenticationFailed('Unauthenticated')
+
+        obj_id = kwargs.pop('pk')
+        obj = self.queryset.filter(id=obj_id).first()
+
+        if obj and not is_permission_allowed(request, obj):
+            raise PermissionDenied()
+
+        request.data['author'] = request.user.id
+        request.data['post'] = obj.post.id if obj else None
+        return self.update(request, *args, **kwargs)
