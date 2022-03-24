@@ -10,7 +10,9 @@ import datetime
 from .serializers import PostSerializer, CommentSerializer
 from rest_framework import generics, mixins
 
-# Create your views here.
+"""
+Authentication Api View
+"""
 class RegisterView(APIView):
     def post(self,request):
         serializer = RegisterSerializer(data = request.data)
@@ -68,6 +70,10 @@ def is_authenticated(request, *args, **kwargs):
 def is_permission_allowed(request, obj, *args, **kwargs):
     return obj.author == request.user
 
+"""
+Allow user to retrieve and post Posts
+"""
+
 class PostApiView(mixins.ListModelMixin, mixins.CreateModelMixin,generics.GenericAPIView):
 
     queryset = Post.objects.all()
@@ -83,6 +89,10 @@ class PostApiView(mixins.ListModelMixin, mixins.CreateModelMixin,generics.Generi
 
         request.data['author'] = request.user.id
         return self.create(request, *args, **kwargs)
+
+"""
+Allow Api consumer to retrive,update and delete posts
+"""
 
 class PostDetailView(mixins.RetrieveModelMixin,mixins.UpdateModelMixin,
                     mixins.DestroyModelMixin,enerics.GenericAPIView):
@@ -120,6 +130,10 @@ class PostDetailView(mixins.RetrieveModelMixin,mixins.UpdateModelMixin,
 
         return self.destroy(request, *args, **kwargs)
 
+"""
+Allow Api consumer to  to View comments
+"""
+
 class CommentListsView(mixins.ListModelMixin, mixins.CreateModelMixin,
                    generics.GenericAPIView):
 
@@ -136,3 +150,14 @@ class CommentListsView(mixins.ListModelMixin, mixins.CreateModelMixin,
 
         request.data['author'] = request.user.id
         return self.create(request, *args, **kwargs)
+
+
+class CommentDetailView(mixins.RetrieveModelMixin,mixins.UpdateModelMixin,mixins.DestroyModelMixin,generics.GenericAPIView):
+
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+
+    def get(self, request, *args, **kwargs):
+        if not is_authenticated(request):
+            raise AuthenticationFailed('Unauthenticated')
+        return self.retrieve(request, *args, **kwargs)
