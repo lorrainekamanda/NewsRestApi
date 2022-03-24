@@ -11,3 +11,13 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
+class Post(models.Model):
+   
+    title = models.CharField(max_length=50)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="creator")
+    creation_date = models.DateTimeField(auto_now_add=True)
+    upvotes = models.ManyToManyField(User, related_name='votes', blank=True)
+    link = models.URLField(blank=True, null=True)
+
+    def __str__(self):
+        return self.title
