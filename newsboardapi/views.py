@@ -83,3 +83,39 @@ class PostApiView(mixins.ListModelMixin, mixins.CreateModelMixin,generics.Generi
 
         request.data['author'] = request.user.id
         return self.create(request, *args, **kwargs)
+
+class PostDetailView(mixins.RetrieveModelMixin,mixins.UpdateModelMixin,
+                    mixins.DestroyModelMixin,enerics.GenericAPIView):
+
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+    def get(self, request, *args, **kwargs):
+        if not is_authenticated(request):
+            raise AuthenticationFailed('Unauthenticated')
+        return self.retrieve(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+        if not is_authenticated(request):
+            raise AuthenticationFailed('Unauthenticated')
+
+        obj_id = kwargs.pop('pk')
+        obj = self.queryset.filter(id=obj_id).first()
+
+        if obj and not is_permission_allowed(request, obj):
+            raise PermissionDenied()
+
+        request.data['author'] = request.user.id
+        return self.update(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        if not is_authenticated(request):
+            raise AuthenticationFailed('Unauthenticated')
+
+        obj_id = kwargs.pop('pk')
+        obj = self.queryset.filter(id=obj_id).first()
+
+        if obj and not is_permission_allowed(request, obj):
+            raise PermissionDenied()
+
+        return self.destroy(request, *args, **kwargs)
