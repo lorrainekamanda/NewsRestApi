@@ -95,7 +95,7 @@ Allow Api consumer to retrive,update and delete posts
 """
 
 class PostDetailView(mixins.RetrieveModelMixin,mixins.UpdateModelMixin,
-                    mixins.DestroyModelMixin,enerics.GenericAPIView):
+                    mixins.DestroyModelMixin,generics.GenericAPIView):
 
     queryset = Post.objects.all()
     serializer_class = PostSerializer
@@ -189,3 +189,15 @@ class CommentDetailView(mixins.RetrieveModelMixin,mixins.UpdateModelMixin,mixins
 
         return self.destroy(request, *args, **kwargs)
 
+class UpvotePostView(APIView):
+    def post(self, request, *args, **kwargs):
+        if not is_authenticated(request):
+            raise AuthenticationFailed('Unauthenticated')
+
+        pk = kwargs.pop('pk')
+        post = Post.objects.filter(pk=pk).first()
+        post.upvotes.add(request.user)
+        post.save()
+
+        serializer = PostSerializer(post)
+        return Response(serializer.data)
