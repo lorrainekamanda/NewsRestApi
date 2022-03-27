@@ -11,7 +11,7 @@ django.setup()
 app.conf.beat_schedule = {
     'restart-votes-count': {
         'task': 'newsboardapi.tasks.restart_votes',
-        'schedule': crontab(hour=0, minute=0)  # everyday at midnight
+        'schedule': crontab(hour=0, minute=0)  
     }
 
 

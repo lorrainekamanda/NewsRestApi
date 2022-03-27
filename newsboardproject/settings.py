@@ -11,21 +11,29 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import dj_database_url
+import os
+import django_heroku
+
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+DEBUG = False
 
+ALLOWED_HOSTS = ['.herokuapp.com', 'localhost', '127.0.0.1']
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-5$k_5$yohb11hzzuoz+ru#=b6pfi!eph#@t7o6s8kzd4ja^y87'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = []
+
+SECRET_KEY = 'django-insecure-5$k_5$yohb11hzzuoz+ru#=b6pfi!eph#@t7o6s8kzd4ja^y87'
 
 
 # Application definition
@@ -80,14 +88,19 @@ WSGI_APPLICATION = 'newsboardproject.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'newsboarddatabase',
-        'USER': 'newsboarduser',
-        'PASSWORD': 'newsboardapi123',
-        'HOST': 'localhost',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'db',
+        'PORT': 5432,
     }
 }
+
+
+
+
+
 
 
 # Password validation
@@ -137,3 +150,5 @@ AUTH_USER_MODEL = 'newsboardapi.User'
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
+
+django_heroku.settings(locals())
