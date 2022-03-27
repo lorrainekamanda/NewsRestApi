@@ -6,9 +6,8 @@ This is a  News Api Django rest Framework project that focuses on the CRUD funct
 The following are the resources used by the project:
 
   - [Docker](https://www.docker.com/) - for virtual development environment and easy deployment
-  - [Psycogpg](https://github.com/psycopg/psycopg2) - python client for postgres db
   - [Postman](https://startbootstrap.com/theme/sb-admin-2) -For assement of the Apis
-  - [Heroku](http://www.heroku.com/) - for very easy production deployment.
+  - [Heroku](https://newsboardapi.herokuapp.com/) - for very easy production deployment.
 
 ## Prerequisites
 As a prerequisite please make sure you have the following tools already installed on your machine:
