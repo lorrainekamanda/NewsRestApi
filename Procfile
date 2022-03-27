@@ -1,2 +1,2 @@
-web gunicorn newsboardprojectwsgi --log-file -
-worker: celery -A job_board worker -l info -B
+web gunicorn newsboardproject.wsgi --log-file -
+worker: celery -A reset worker -l info -B
