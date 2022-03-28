@@ -6,7 +6,7 @@ This is a  News Api Django rest Framework project that focuses on the CRUD funct
 The following are the resources used by the project:
 
   - [Docker](https://www.docker.com/) - for virtual development environment and easy deployment
-  - [Postman](https://startbootstrap.com/theme/sb-admin-2) -For assement of the Apis
+  - [Postman](https://www.postman.com/restless-comet-828898/workspace/79251e69-defb-48e5-bdb8-184ced38e113/overview) -For Api    documentation
   - [Heroku](https://newsboardapi.herokuapp.com/) - for very easy production deployment.
 
 ## Prerequisites
@@ -24,7 +24,7 @@ $ python3 -m virtualenv DjangoInMinutesStarterProject
 ## Installing the app using Django!
 1. Clone this repo
 ```sh
-$ git clone git@github.com:NoahFinberg/djangostarterproject.git
+$ git clone https://github.com/lorrainekamanda/NewsRestApi
 ```
 
 [Github](https://github.com/) - You want to set up a new Github repo for this code so you can make changes for your own project. (also needed for deploying to Heroku)
@@ -35,17 +35,22 @@ git push origin main
 
 2. Build the Docker Container
 ```sh
-$ cd djangostarterproject
+$ cd NewsboardApi
 $ docker-compose up --build
 ```
 You should see all the resources including the web server startup in your terminal. Now, open up another terminal window in the same directory.
 
 3. Populate Postgres DB
 ```sh
-$ cd djangostarterproject
-$ docker-compose exec web python manage.py migrate
+
+$ docker-compose run web python manage.py migrate
 ```
-Now refresh `localhost:8000`. That should be enough for you to run the starter project locally. Seriously, that's it! One thing to note is if you change some settings in the Dockerfile or docker-compose.yml files, you'll need to rebuild the docker container.
+Now refresh `localhost:8000`. 
+
+
+
+## Deployment!
+This app is deployed to heroku the link is https://newsboardapi.herokuapp.com/
 
 If you'd like to deploy your project to Heroku, that's also pretty simple now. Just use the following commands:
 ```sh
