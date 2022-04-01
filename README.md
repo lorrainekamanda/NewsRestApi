@@ -17,11 +17,11 @@ As a prerequisite please make sure you have the following tools already installe
 4. [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli) - Note: you'll need to create a Heroku account and there may be a cost associated with the servers you use.
 5. [VirtualEnv](https://docs.python.org/3/tutorial/venv.html)
 ```sh
-$ python3 -m virtualenv DjangoInMinutesStarterProject
+$ python3 -m venv virtual
 
 ```
 
-## Installing the app using Django!
+## Installing and using the app using Django!
 1. Clone this repo
 ```sh
 $ git clone https://github.com/lorrainekamanda/NewsRestApi
@@ -46,6 +46,13 @@ You should see all the resources including the web server startup in your termin
 $ docker-compose run web python manage.py migrate
 ```
 Now refresh `localhost:8000`. 
+
+3. Authentication and Authorization
+```sh
+
+$ make sure to register and login to use the application
+```
+
 
 
 
