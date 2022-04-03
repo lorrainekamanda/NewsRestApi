@@ -1,1 +1,6 @@
 virtual/
+.virtual
+.venv 
+venv
+venv/
+ENV/
