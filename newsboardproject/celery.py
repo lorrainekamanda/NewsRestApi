@@ -8,6 +8,10 @@ from celery.schedules import crontab
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'newsboardproject.settings')
 django.setup()
 
+app = Celery('job_board',
+             broker=os.environ.get('CLOUDAMQP_URL'),
+             include=['newsboardapi.tasks'])
+
 app.conf.beat_schedule = {
     'restart-votes-count': {
         'task': 'newsboardapi.tasks.restart_votes',
